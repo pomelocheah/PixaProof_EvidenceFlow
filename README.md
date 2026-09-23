@@ -1,16 +1,61 @@
-# React + Vite
+# PixaProof EvidenceFlow
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Interactive React demo for an insurance claim workflow:
 
-Currently, two official plugins are available:
+1. EvidenceFlow detects an evidence gap.
+2. The user clicks `START GUIDED CAPTURE`.
+3. Guided Capture connects to the PixaProof WebSDK.
+4. Captured evidence is sent through a local server proxy for verification.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Setup
 
-## React Compiler
+Install dependencies:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+pnpm install
+```
 
-## Expanding the Oxlint configuration
+Create a local `.env` file from the example:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+```bash
+cp .env.example .env
+```
+
+Fill in the PixaProof credentials:
+
+```bash
+PIXAPROOF_API_URL=
+PIXAPROOF_API_KEY=
+PIXAPROOF_CLIENT_ID=
+PIXAPROOF_CLIENT_SECRET=
+```
+
+The `.env` file is intentionally ignored by Git because it contains secrets.
+
+## Run Locally
+
+Start the PixaProof proxy in one terminal:
+
+```bash
+pnpm server
+```
+
+Start the Vite UI in another terminal:
+
+```bash
+pnpm dev
+```
+
+Open the local URL shown by Vite, usually:
+
+```text
+http://localhost:5173/
+```
+
+If credentials are missing, the app still allows `USE DEMO CAPTURE` so the teacher can see the full EvidenceFlow workflow.
+
+## Build
+
+```bash
+pnpm build
+```
