@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:full": "sh -c 'node server/server.cjs & SERVER_PID=$!; trap \"kill $SERVER_PID\" EXIT INT TERM; vite'",
     "server": "node server/server.cjs",
     "build": "vite build",
     "lint": "oxlint",
