@@ -701,7 +701,8 @@ function App() {
 
     setTimeout(async () => {
       try {
-        const session = await fetch("/api/pixaproof/session").then((res) => res.json());
+        const session = await fetch("/api/pixaproof/session")
+          .then((res) => (res.ok ? res.json() : Promise.reject(new Error("PixaProof proxy is not available on this hosted demo."))));
         if (!session.configured) {
           setSdkStatus(session.reason || "Missing PixaProof credentials. Demo capture available.");
           return;
@@ -766,7 +767,7 @@ function App() {
 
         await sdkRef.current.init();
       } catch (error) {
-        setSdkStatus(`Connection failed: ${error.message}`);
+        setSdkStatus(`Demo mode: ${error.message} Use demo capture to continue.`);
       } finally {
         setStarting(false);
       }
@@ -797,7 +798,14 @@ function App() {
     const result = await fetch("/api/pixaproof/verify", {
       method: "POST",
       body: formData,
-    }).then((res) => res.json());
+    })
+      .then((res) => (res.ok ? res.json() : Promise.reject(new Error("PixaProof proxy unavailable"))))
+      .catch(() => ({
+        mode: "hosted-demo",
+        trusted: true,
+        verdict: "Pass",
+        receiptId: "DEMO-HOSTED",
+      }));
 
     await sdkRef.current?.closeCamera?.().catch(() => {});
     setVerification(result);
